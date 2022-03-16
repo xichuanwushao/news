@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.4</version>
+        <version>2.2.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.xichuan</groupId>
@@ -13,10 +13,20 @@
     <version>1.0.0</version>
     <name>news</name>
     <description>博客新闻</description>
+
+<!--    <packaging>pom</packaging> 有这个就不能运行了-->
+
     <properties>
         <java.version>1.8</java.version>
-        <spring-cloud.version>2021.0.1</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
     </properties>
+
+    <!--
+    使用dependencyManagement的目的是为了保证父工程的干净，
+    也就是说父工程他只负责管理依赖，以及依赖的版本，而不会导入额外的jar依赖。
+    如此一来父工程的职责就很单一了，而且也符合了面向对象开发的父子继承关系，
+    依赖的导入只有在各自的子工程中才会进行导入。
+-->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -46,6 +56,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -11,8 +11,5 @@
 
     <artifactId>xichuan-news-dev-vommon</artifactId>
 
-    <properties>
-        <start-class>com.imooc.user.Application</start-class>
-    </properties>
 
 </project>

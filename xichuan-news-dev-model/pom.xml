@@ -11,9 +11,7 @@
 
     <artifactId>xichuan-news-dev-model</artifactId>
 
-    <properties>
-        <start-class>com.imooc.user.Application</start-class>
-    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.xichuan</groupId>

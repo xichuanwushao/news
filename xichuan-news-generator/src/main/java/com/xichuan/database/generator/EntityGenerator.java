@@ -20,16 +20,16 @@ import java.util.Map;
 public class EntityGenerator {
 
     // 生成输出目录，定位到工程的java目录下
-    private String outputDir = "F:\\Code\\Wangkf\\free-fs-test\\src\\main\\java";
+    private String outputDir = "F:\\Code\\Wangkf\\news\\xichuan-news-generator\\src\\main\\java";
     // 生成类的作者
     private String author = "wuxiao";
     // 数据源相关配置
-    private String url = "jdbc:mysql://127.0.0.1:3306/works-archives?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC";
+    private String url = "jdbc:mysql://127.0.0.1:3306/news-dev?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC";
     private String driverName = "com.mysql.cj.jdbc.Driver";
     private String userName = "root";
     private String userPwd = "qweqwe";
     // DAO的包路径
-    private String daoPackage = "com.free.fs";
+    private String daoPackage = "com.xichuan.database";
     // 待生成的表名，注意是覆盖更新
     private static String[] tableNames;
 

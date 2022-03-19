@@ -9,7 +9,9 @@ server:
   tomcat:
     uri-encoding: UTF-8
     max-swallow-size: -1  # tomcat默认大小2M，超过2M的文件不会被捕获，需要调整此处大小为100MB或者-1即可
-
+  # 云存储配置
+  servlet:
+    context-path: /news
 ############################################################
 #
 # 配置项目信息
@@ -36,4 +38,10 @@ mybatis-plus:
     refresh-mapper: true
 logging:
   config: classpath:logback.xml
+swagger:
+  # 是否开启swagger
+  enabled: true
+  # 请求前缀
+  pathMapping: /
+
 

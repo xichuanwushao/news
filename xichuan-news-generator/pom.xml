@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mybatis-generator-database</artifactId>
+    <artifactId>xichuan-news-generator</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

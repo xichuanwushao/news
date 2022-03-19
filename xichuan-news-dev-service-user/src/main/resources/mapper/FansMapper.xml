@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xichuan.database.mapper.FansMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xichuan.model.pojo.Fans">
+        <id column="id" property="id" />
+        <result column="writer_id" property="writerId" />
+        <result column="fan_id" property="fanId" />
+        <result column="face" property="face" />
+        <result column="fan_nickname" property="fanNickname" />
+        <result column="sex" property="sex" />
+        <result column="province" property="province" />
+    </resultMap>
+</mapper>

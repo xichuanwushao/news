@@ -2,8 +2,6 @@ package com.xichuan.vommon.result;
 
 /**
  * 
- * @Title: JSONResult.java
- * @Package com.imooc.utils
  * @Description: 自定义响应数据结构
  * 				本类可提供给 H5/ios/安卓/公众号/小程序 使用
  * 				前端接受此类数据（json object)后，可自行根据业务去实现相关功能
@@ -15,10 +13,6 @@ package com.xichuan.vommon.result;
  * 				555：异常抛出信息
  * 				556: 用户qq校验异常
  * 			    557: 校验用户是否在CAS登录，用户门票的校验
- * @Copyright: Copyright (c) 2020
- * @Company: www.imooc.com
- * @author 慕课网 - 风间影月
- * @version V1.0
  */
 public class JSONResult {
 

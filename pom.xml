@@ -105,6 +105,12 @@
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>3.0.3</version>
             </dependency>
+            <!-- 第三方云厂商相关的依赖 -->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>4.5.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

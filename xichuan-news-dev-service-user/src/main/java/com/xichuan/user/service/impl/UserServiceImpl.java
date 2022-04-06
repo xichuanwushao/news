@@ -9,6 +9,7 @@ import com.xichuan.vommon.enums.UserStatus;
 import com.xichuan.vommon.util.DateUtil;
 import com.xichuan.vommon.util.DesensitizationUtil;
 import com.xichuan.vommon.util.RedisOperator;
+import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public AppUserMapper appUserMapper;
 
-
+    @Autowired
+    public Sid sid;
 
     @Autowired
     public RedisOperator redis;
@@ -45,12 +47,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public AppUser createUser(String mobile) {
+
         /**
          * 互联网项目都要考虑可扩展性
          * 如果未来的业务激增，那么就需要分库分表
          * 那么数据库表主键id必须保证全局（全库）唯一，不得重复
          */
-        String userId = (UUID.randomUUID()+"").substring(0,6);
+        String userId = sid.nextShort();
 
         AppUser user = new AppUser();
 

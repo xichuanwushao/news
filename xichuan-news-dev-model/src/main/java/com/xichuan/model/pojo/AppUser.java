@@ -3,6 +3,8 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
+
 /**
  * <p>
  * 网站用户
@@ -50,7 +52,7 @@ public class AppUser extends Model<AppUser> {
     /**
      * 生日
      */
-    private LocalDate birthday;
+    private Date birthday;
 
     /**
      * 省份
@@ -80,12 +82,12 @@ public class AppUser extends Model<AppUser> {
     /**
      * 创建时间 创建时间
      */
-    private LocalDateTime createdTime;
+    private Date createdTime;
 
     /**
      * 更新时间 更新时间
      */
-    private LocalDateTime updatedTime;
+    private Date updatedTime;
 
     public String getId() {
         return id;
@@ -143,11 +145,15 @@ public class AppUser extends Model<AppUser> {
         this.sex = sex;
     }
 
-    public LocalDate getBirthday() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -191,19 +197,19 @@ public class AppUser extends Model<AppUser> {
         this.totalIncome = totalIncome;
     }
 
-    public LocalDateTime getCreatedTime() {
+    public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(LocalDateTime createdTime) {
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
 
-    public LocalDateTime getUpdatedTime() {
+    public Date getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(LocalDateTime updatedTime) {
+    public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
 

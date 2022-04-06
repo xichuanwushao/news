@@ -24,7 +24,7 @@ public class EntityGenerator {
     // 生成类的作者
     private String author = "wuxiao";
     // 数据源相关配置
-    private String url = "jdbc:mysql://127.0.0.1:3306/news-dev?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC";
+    private String url = "jdbc:mysql://127.0.0.1:3306/news-dev?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC";
     private String driverName = "com.mysql.cj.jdbc.Driver";
     private String userName = "root";
     private String userPwd = "qweqwe";

@@ -2,7 +2,10 @@ package com.xichuan.user.controller;
 
 import com.xichuan.api.BaseController;
 import com.xichuan.api.controller.user.PassportControllerApi;
+import com.xichuan.model.pojo.AppUser;
 import com.xichuan.model.pojo.bo.RegistLoginBO;
+import com.xichuan.user.service.UserService;
+import com.xichuan.vommon.enums.UserStatus;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.IPUtil;
@@ -25,6 +28,9 @@ public class PassportController extends BaseController implements PassportContro
 
     @Autowired
     private SMSUtils smsUtils;
+
+    @Autowired
+    private UserService userService;
 
 
     @Override
@@ -63,6 +69,16 @@ public class PassportController extends BaseController implements PassportContro
         if (StringUtils.isBlank(redisSMSCode) || !redisSMSCode.equalsIgnoreCase(smsCode)) {
             return GraceJSONResult.errorCustom(ResponseStatusEnum.SMS_CODE_ERROR);
         }
-        return null;
+
+        // 2. 查询数据库，判断该用户注册
+        AppUser user = userService.queryMobileIsExist(mobile);
+        if (user != null && user.getActiveStatus() == UserStatus.FROZEN.type) {
+            // 如果用户不为空，并且状态为冻结，则直接抛出异常，禁止登录
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.USER_FROZEN);
+        } else if (user == null) {
+            // 如果用户没有注册过，则为null，需要注册信息入库
+            user = userService.createUser(mobile);
+        }
+        return GraceJSONResult.ok(user);
     }
 }

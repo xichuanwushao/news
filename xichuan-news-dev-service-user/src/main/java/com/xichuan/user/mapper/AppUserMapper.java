@@ -2,6 +2,7 @@ package com.xichuan.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xichuan.model.pojo.AppUser;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.xichuan.model.pojo.AppUser;
  * @author wuxiao
  * @since 2022-03-19
  */
+@Repository
 public interface AppUserMapper extends BaseMapper<AppUser> {
 
 }

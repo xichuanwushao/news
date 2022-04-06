@@ -1,5 +1,7 @@
 package com.xichuan.api.interceptors;
 
+import com.xichuan.vommon.exception.GraceException;
+import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.IPUtil;
 import com.xichuan.vommon.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,8 @@ public class PassportInterceptor implements HandlerInterceptor {
         boolean keyIsExist = redis.keyIsExist(MOBILE_SMSCODE + ":" + userIp);
 
         if (keyIsExist) {
-            System.out.println("短信发送频率太大！");
+            GraceException.display(ResponseStatusEnum.SMS_NEED_WAIT_ERROR);
+//            System.out.println("短信发送频率太大！");
             return false;
         }
 

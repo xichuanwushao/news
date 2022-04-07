@@ -16,4 +16,9 @@ public interface UserService {
      * 创建用户，新增用户记录到数据库
      */
     public AppUser createUser(String mobile);
+
+    /**
+     * 根据用户主键id查询用户信息
+     */
+    public AppUser getUser(String userId);
 }

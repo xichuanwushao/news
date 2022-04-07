@@ -4,6 +4,7 @@ import com.xichuan.api.BaseController;
 import com.xichuan.api.controller.user.UserControllerApi;
 import com.xichuan.model.pojo.AppUser;
 import com.xichuan.model.pojo.bo.UpdateUserInfoBO;
+import com.xichuan.model.pojo.vo.AppUserVO;
 import com.xichuan.model.pojo.vo.UserAccountInfoVO;
 import com.xichuan.user.service.UserService;
 import com.xichuan.vommon.result.GraceJSONResult;
@@ -29,6 +30,24 @@ public class UserController extends BaseController implements UserControllerApi 
 
     @Autowired
     private UserService userService;
+
+    @Override
+    public GraceJSONResult getUserInfo(String userId) {
+        // 0. 判断参数不能为空
+        if (StringUtils.isBlank(userId)) {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.UN_LOGIN);
+        }
+
+        // 1. 根据userId查询用户的信息
+        AppUser user = getUser(userId);
+
+        // 2. 返回用户信息
+        AppUserVO userVO = new AppUserVO();
+        BeanUtils.copyProperties(user, userVO);
+
+        return GraceJSONResult.ok(userVO);
+    }
+
 
     @Override
     public GraceJSONResult getAccountInfo(String userId) {

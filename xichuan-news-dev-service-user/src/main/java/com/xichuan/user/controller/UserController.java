@@ -65,6 +65,8 @@ public class UserController extends BaseController implements UserControllerApi 
             return GraceJSONResult.errorMap(map);
         }
 
+        // 1. 执行更新操作
+        userService.updateUserInfo(updateUserInfoBO);
         return GraceJSONResult.ok();
     }
 

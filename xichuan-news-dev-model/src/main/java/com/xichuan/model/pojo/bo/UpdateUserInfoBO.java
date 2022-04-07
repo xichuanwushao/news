@@ -12,7 +12,7 @@ public class UpdateUserInfoBO {
     private String id;
 
     @NotBlank(message = "用户昵称不能为空")
-    @Length(max = 12, message = "用户昵称不能超过12位")
+    @Length(max = 16, message = "用户昵称不能超过16位")
     private String nickname;
 
     @NotBlank(message = "用户头像不能为空")

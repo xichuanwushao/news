@@ -2,6 +2,7 @@ package com.xichuan.user.service;
 
 
 import com.xichuan.model.pojo.AppUser;
+import com.xichuan.model.pojo.bo.UpdateUserInfoBO;
 
 import java.util.List;
 
@@ -21,4 +22,9 @@ public interface UserService {
      * 根据用户主键id查询用户信息
      */
     public AppUser getUser(String userId);
+
+    /**
+     * 用户修改信息，完善资料，并且激活
+     */
+    public void updateUserInfo(UpdateUserInfoBO updateUserInfoBO);
 }

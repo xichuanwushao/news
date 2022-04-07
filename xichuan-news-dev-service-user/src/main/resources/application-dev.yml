@@ -8,6 +8,11 @@ spring:
     port: 6379
     password: abc123456
 
+# 在dev环境开启mybatis的日志打印
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 # 设置域名，在java代码中获取，这里是资源配置
 website:
   domain-name: 127.0.0.1

@@ -11,6 +11,7 @@ import com.xichuan.vommon.exception.GraceException;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.DateUtil;
 import com.xichuan.vommon.util.DesensitizationUtil;
+import com.xichuan.vommon.util.JsonUtils;
 import com.xichuan.vommon.util.RedisOperator;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.BeanUtils;
@@ -81,6 +82,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void updateUserInfo(UpdateUserInfoBO updateUserInfoBO) {
+        String userId = updateUserInfoBO.getId();
 
         AppUser userInfo = new AppUser();
         BeanUtils.copyProperties(updateUserInfoBO, userInfo);
@@ -92,5 +94,10 @@ public class UserServiceImpl implements UserService {
         if (result != 1) {
             GraceException.display(ResponseStatusEnum.USER_UPDATE_ERROR);
         }
+
+        // 再次查询用户的最新信息，放入redis中
+        AppUser user = getUser(userId);
+        redis.set(REDIS_USER_INFO + ":" + userId, JsonUtils.objectToJson(user));
+
     }
 }

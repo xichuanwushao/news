@@ -3,6 +3,7 @@ package com.xichuan.user.controller;
 import com.xichuan.api.BaseController;
 import com.xichuan.api.controller.user.UserControllerApi;
 import com.xichuan.model.pojo.AppUser;
+import com.xichuan.model.pojo.bo.UpdateUserInfoBO;
 import com.xichuan.model.pojo.vo.UserAccountInfoVO;
 import com.xichuan.user.service.UserService;
 import com.xichuan.vommon.result.GraceJSONResult;
@@ -12,7 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * @author : wuxiao
@@ -48,4 +53,19 @@ public class UserController extends BaseController implements UserControllerApi 
         AppUser  user = userService.getUser(userId);
         return user;
     }
+
+    @Override
+    public GraceJSONResult updateUserInfo(
+            @Valid UpdateUserInfoBO updateUserInfoBO,
+            BindingResult result) {
+
+        // 0. 校验BO
+        if (result.hasErrors()) {
+            Map<String, String> map = getErrors(result);
+            return GraceJSONResult.errorMap(map);
+        }
+
+        return GraceJSONResult.ok();
+    }
+
 }

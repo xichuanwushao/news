@@ -4,18 +4,24 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.xichuan.files.minio.model.FilePojo;
 import com.xichuan.files.resource.FileResource;
 import com.xichuan.files.service.UploaderService;
+import com.xichuan.files.template.MinioTemplate;
 import com.xichuan.vommon.util.AliyunResource;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 
 @Service
 public class UploaderServiceImpl implements UploaderService {
+
+    @Resource
+    private MinioTemplate minioTemplate;
 
     @Autowired
     public FastFileStorageClient fastFileStorageClient;
@@ -24,6 +30,7 @@ public class UploaderServiceImpl implements UploaderService {
     public FileResource fileResource;
     @Autowired
     public AliyunResource aliyunResource;
+
 
     @Autowired
     public Sid sid;
@@ -74,4 +81,12 @@ public class UploaderServiceImpl implements UploaderService {
 
         return myObjectName;
     }
+
+    @Override
+    public String uploadMinio(MultipartFile file) throws Exception {
+        FilePojo filePojo = minioTemplate.upload(file);
+        return filePojo.getUrl();
+    }
+
+
 }

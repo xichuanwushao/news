@@ -16,4 +16,9 @@ public interface UploaderService {
                             String userId,
                             String fileExtName) throws Exception;
 
+    /**
+     * 使用minio上传文件
+     */
+    public String uploadMinio(MultipartFile file) throws Exception;
+
 }

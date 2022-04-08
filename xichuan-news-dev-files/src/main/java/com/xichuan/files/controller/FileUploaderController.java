@@ -61,8 +61,9 @@ public class FileUploaderController implements FileUploaderControllerApi {
                 }
 
                 // 执行上传
-                path = uploaderService.uploadFdfs(file, suffix);
+                  //path = uploaderService.uploadFdfs(file, suffix);
 //                path = uploaderService.uploadOSS(file, userId, suffix);
+                path = uploaderService.uploadMinio(file);
 
             } else {
                 return GraceJSONResult.errorCustom(ResponseStatusEnum.FILE_UPLOAD_NULL_ERROR);

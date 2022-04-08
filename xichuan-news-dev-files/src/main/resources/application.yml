@@ -24,8 +24,8 @@ spring:
     time-zone: GMT+8
   servlet:
     multipart:
-      max-file-size: 512000   # 请求的文件大小限制为500kb
-      max-request-size: 512000
+      max-file-size: 300MB
+      max-request-size: 300MB
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/news-dev?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
     username: root
@@ -43,3 +43,12 @@ swagger:
 # fastdfs 的配置信息
 #
 ############################################################
+fs:
+  files-server:
+    type: minio
+    minio:
+      accessKey: admin
+      secretKey: 12345678
+      consoleUrl: http://192.168.1.122:9000
+      apiPort: 9000
+      defaultBucket: huoyan

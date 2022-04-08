@@ -16,10 +16,7 @@ public class FsServerProperties {
      * 自动化配置
      * type：oss or local or minio
      */
-    private String type = "oss";
-
-
-
+    private String type = "minio";
     /**
      * minio配置
      */

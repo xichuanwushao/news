@@ -9,6 +9,7 @@
         <module>xichuan-news-dev-service-user</module>
         <module>xichuan-news-generator</module>
         <module>xichuan-news-dev-files</module>
+        <module>xichuan-news-dev-service-admin</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

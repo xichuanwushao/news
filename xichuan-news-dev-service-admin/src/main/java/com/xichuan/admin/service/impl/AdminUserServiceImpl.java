@@ -5,11 +5,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xichuan.admin.mapper.AdminUserMapper;
 import com.xichuan.admin.service.IAdminUserService;
 import com.xichuan.model.pojo.AdminUser;
-import com.xichuan.model.pojo.AppUser;
-import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
 
 /**
  * <p>

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -42,12 +43,12 @@ public class AdminUser extends Model<AdminUser> {
     /**
      * 创建时间 创建时间
      */
-    private LocalDateTime createdTime;
+    private Date createdTime;
 
     /**
      * 更新时间 更新时间
      */
-    private LocalDateTime updatedTime;
+    private Date updatedTime;
 
     public String getId() {
         return id;
@@ -89,19 +90,19 @@ public class AdminUser extends Model<AdminUser> {
         this.adminName = adminName;
     }
 
-    public LocalDateTime getCreatedTime() {
+    public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(LocalDateTime createdTime) {
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
 
-    public LocalDateTime getUpdatedTime() {
+    public Date getUpdatedTime() {
         return updatedTime;
     }
 
-    public void setUpdatedTime(LocalDateTime updatedTime) {
+    public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
     }
 

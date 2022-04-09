@@ -1,4 +1,4 @@
-package com.xichuan.admin;
+package com.xichuan.admin.controller;
 
 import com.xichuan.api.controller.HelloControllerApi;
 import com.xichuan.vommon.result.GraceJSONResult;

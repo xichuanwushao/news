@@ -5,6 +5,7 @@ import com.xichuan.api.BaseController;
 import com.xichuan.api.controller.admin.AdminMngControllerApi;
 import com.xichuan.model.pojo.AdminUser;
 import com.xichuan.model.pojo.bo.AdminLoginBO;
+import com.xichuan.vommon.exception.GraceException;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.RedisOperator;
@@ -77,5 +78,20 @@ public class AdminMngController extends BaseController implements AdminMngContro
         setCookie(request, response, "atoken", token, COOKIE_MONTH);
         setCookie(request, response, "aid", admin.getId(), COOKIE_MONTH);
         setCookie(request, response, "aname", admin.getAdminName(), COOKIE_MONTH);
+    }
+
+
+    @Override
+    public GraceJSONResult adminIsExist(String username) {
+        checkAdminExist(username);
+        return GraceJSONResult.ok();
+    }
+
+    private void checkAdminExist(String username) {
+        AdminUser admin = adminUserService.queryAdminByUsername(username);
+
+        if (admin != null) {
+            GraceException.display(ResponseStatusEnum.ADMIN_USERNAME_EXIST_ERROR);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.xichuan.api.config;
 
+import com.xichuan.api.interceptors.AdminTokenInterceptor;
 import com.xichuan.api.interceptors.PassportInterceptor;
 import com.xichuan.api.interceptors.UserActiveInterceptor;
 import com.xichuan.api.interceptors.UserTokenInterceptor;
@@ -30,15 +31,27 @@ public class InterceptorConfig  implements WebMvcConfigurer {
         return new UserActiveInterceptor();
     }
 
+    @Bean
+    public AdminTokenInterceptor adminTokenInterceptor() {
+        return new AdminTokenInterceptor();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
         registry.addInterceptor(passportInterceptor())
                 .addPathPatterns("/passport/getSMSCode");
+
         registry.addInterceptor(userTokenInterceptor())
                 .addPathPatterns("/user/getAccountInfo")
                 .addPathPatterns("/user/updateUserInfo");
+
         registry.addInterceptor(userActiveInterceptor())
                 .addPathPatterns("/user/updateUserInfo");
+
+        registry.addInterceptor(adminTokenInterceptor())
+                .addPathPatterns("/adminMng/adminIsExist")
+                .addPathPatterns("/adminMng/addNewAdmin")
+                .addPathPatterns("/adminMng/getAdminList");
     }
     }

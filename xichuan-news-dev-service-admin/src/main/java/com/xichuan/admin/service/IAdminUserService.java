@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xichuan.model.pojo.AdminUser;
 import com.xichuan.model.pojo.bo.NewAdminBO;
 
+import java.util.List;
+
 /**
  * <p>
  * 运营管理平台的admin级别用户 服务类
@@ -27,5 +29,5 @@ public interface IAdminUserService extends IService<AdminUser> {
     /**
      * 分页查询admin列表
      */
-    public void queryAdminList(Integer page, Integer pageSize);
+    public List<AdminUser> queryAdminList(Integer page, Integer pageSize);
 }

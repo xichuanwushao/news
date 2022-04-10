@@ -76,11 +76,12 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
 
 
     @Override
-    public void queryAdminList(Integer page, Integer pageSize) {
+    public List<AdminUser> queryAdminList(Integer page, Integer pageSize) {
         Page<AdminUser> pages = new Page<AdminUser>(page,pageSize);
         //条件
         QueryWrapper queryWrapper = new QueryWrapper();
         List<AdminUser> adminUserList = adminUserMapper.selectList(queryWrapper);
+        return adminUserList;
     }
 
 }

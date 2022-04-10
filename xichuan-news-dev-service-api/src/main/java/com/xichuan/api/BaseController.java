@@ -1,6 +1,8 @@
 package com.xichuan.api;
 
+import com.github.pagehelper.PageInfo;
 import com.xichuan.vommon.util.PageUtils;
+import com.xichuan.vommon.util.PagedGridResult;
 import com.xichuan.vommon.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -87,4 +89,17 @@ public class BaseController {
     {
         PageUtils.startPage();
     }
+
+
+    public PagedGridResult setterPagedGrid(List<?> list,
+                                           Integer page) {
+        PageInfo<?> pageList = new PageInfo<>(list);
+        PagedGridResult gridResult = new PagedGridResult();
+        gridResult.setRows(list);
+        gridResult.setPage(page);
+        gridResult.setRecords(pageList.getTotal());
+        gridResult.setTotal(pageList.getPages());
+        return gridResult;
+    }
+
 }

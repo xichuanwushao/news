@@ -9,6 +9,7 @@ import com.xichuan.model.pojo.bo.NewAdminBO;
 import com.xichuan.vommon.exception.GraceException;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
+import com.xichuan.vommon.util.PagedGridResult;
 import com.xichuan.vommon.util.RedisOperator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -146,7 +148,8 @@ public class AdminMngController extends BaseController implements AdminMngContro
             pageSize = COMMON_PAGE_SIZE;
         }
         startPage();
-        adminUserService.queryAdminList(page, pageSize);
-        return GraceJSONResult.ok();
+        List<AdminUser> adminUserList =  adminUserService.queryAdminList(page, pageSize);
+        PagedGridResult result = setterPagedGrid(adminUserList, page);
+        return GraceJSONResult.ok(result);
     }
 }

@@ -50,4 +50,9 @@ public interface AdminMngControllerApi {
             @ApiParam(name = "pageSize", value = "分页查询每一页显示的条数", required = false)
             @RequestParam Integer pageSize);
 
+    @ApiOperation(value = "admin退出登录", notes = "admin退出登录", httpMethod = "POST")
+    @PostMapping("/adminLogout")
+    public GraceJSONResult adminLogout(@RequestParam String adminId,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response);
 }

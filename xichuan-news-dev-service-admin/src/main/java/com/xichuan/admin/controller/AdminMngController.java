@@ -5,10 +5,12 @@ import com.xichuan.api.BaseController;
 import com.xichuan.api.controller.admin.AdminMngControllerApi;
 import com.xichuan.model.pojo.AdminUser;
 import com.xichuan.model.pojo.bo.AdminLoginBO;
+import com.xichuan.model.pojo.bo.NewAdminBO;
 import com.xichuan.vommon.exception.GraceException;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.RedisOperator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,10 @@ public class AdminMngController extends BaseController implements AdminMngContro
     private IAdminUserService adminUserService;
 
     @Override
-    public GraceJSONResult adminLogin( AdminLoginBO adminLoginBO, BindingResult result, HttpServletRequest request, HttpServletResponse response) {
+    public GraceJSONResult adminLogin( AdminLoginBO adminLoginBO,
+                                       BindingResult result,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
         // 0. TODO 验证BO中的用户名和密码不为空
         // 0.判断BindingResult中是否保存了错误的验证信息，如果有，则需要返回
         if (result.hasErrors()) {
@@ -93,5 +98,55 @@ public class AdminMngController extends BaseController implements AdminMngContro
         if (admin != null) {
             GraceException.display(ResponseStatusEnum.ADMIN_USERNAME_EXIST_ERROR);
         }
+    }
+    @Override
+    public GraceJSONResult addNewAdmin(NewAdminBO newAdminBO,
+                                       BindingResult result,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
+
+        // 0. TODO 验证BO中的用户名和密码不为空
+        // 0.判断BindingResult中是否保存了错误的验证信息，如果有，则需要返回
+        if (result.hasErrors()) {
+            Map<String, String> map = getErrors(result);
+            return GraceJSONResult.errorMap(map);
+        }
+        // 1. base64不为空，则代表人脸入库，否则需要用户输入密码和确认密码
+        if (StringUtils.isBlank(newAdminBO.getImg64())) {
+            if (StringUtils.isBlank(newAdminBO.getPassword()) ||
+                    StringUtils.isBlank(newAdminBO.getConfirmPassword())
+            ) {
+                return GraceJSONResult.errorCustom(ResponseStatusEnum.ADMIN_PASSWORD_NULL_ERROR);
+            }
+        }
+
+        // 2. 密码不为空，则必须判断两次输入一致
+        if (StringUtils.isNotBlank(newAdminBO.getPassword())) {
+            if (!newAdminBO.getPassword()
+                    .equalsIgnoreCase(newAdminBO.getConfirmPassword())) {
+                return GraceJSONResult.errorCustom(ResponseStatusEnum.ADMIN_PASSWORD_ERROR);
+            }
+        }
+
+        // 3. 校验用户名唯一
+        checkAdminExist(newAdminBO.getUsername());
+
+        // 4. 调用service存入admin信息
+        adminUserService.createAdminUser(newAdminBO);
+        return GraceJSONResult.ok();
+    }
+    @Override
+    public GraceJSONResult getAdminList(Integer page, Integer pageSize) {
+
+        if (page == null) {
+            page = COMMON_START_PAGE;
+        }
+
+        if (pageSize == null) {
+            pageSize = COMMON_PAGE_SIZE;
+        }
+        startPage();
+        adminUserService.queryAdminList(page, pageSize);
+        return GraceJSONResult.ok();
     }
 }

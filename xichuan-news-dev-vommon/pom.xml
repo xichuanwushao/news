@@ -24,6 +24,11 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-configuration-processor</artifactId>
     </dependency>
+    <!-- pagehelper 分页插件 -->
+    <dependency>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper-spring-boot-starter</artifactId>
+    </dependency>
     <!-- 引入 redis 依赖 -->
     <dependency>
         <groupId>org.springframework.boot</groupId>

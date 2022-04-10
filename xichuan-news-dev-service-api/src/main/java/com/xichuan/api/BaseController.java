@@ -1,5 +1,6 @@
 package com.xichuan.api;
 
+import com.xichuan.vommon.util.PageUtils;
 import com.xichuan.vommon.util.RedisOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,9 @@ public class BaseController {
     public static final Integer COOKIE_MONTH = 30 * 24 * 60 * 60;
 
     public static final Integer COOKIE_DELETE = 0;
+
+    public static final Integer COMMON_START_PAGE = 1;
+    public static final Integer COMMON_PAGE_SIZE = 10;
     /**
      * 获取BO中的错误信息
      * @param result
@@ -76,5 +80,11 @@ public class BaseController {
         cookie.setPath("/");
         response.addCookie(cookie);
     }
-
+    /**
+     * 设置请求分页数据
+     */
+    protected void startPage()
+    {
+        PageUtils.startPage();
+    }
 }

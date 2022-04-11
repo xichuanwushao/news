@@ -3,6 +3,7 @@ package com.xichuan.files.controller;
 import com.xichuan.files.resource.FileResource;
 import com.xichuan.files.service.UploaderService;
 import com.xichuan.api.files.FileUploaderControllerApi;
+import com.xichuan.model.pojo.bo.NewAdminBO;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.extend.AliImageReviewUtils;
@@ -86,6 +87,10 @@ public class FileUploaderController implements FileUploaderControllerApi {
         return GraceJSONResult.ok(finalPath);
     }
 
+    @Override
+    public GraceJSONResult uploadToGridFS(NewAdminBO newAdminBO) throws Exception {
+        return null;
+    }
 
 
     public static final String FAILED_IMAGE_URL = "https://imooc-news.oss-cn-shanghai.aliyuncs.com/image/faild.jpeg";

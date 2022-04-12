@@ -1,5 +1,6 @@
 package com.xichuan.files.controller;
 
+import com.mongodb.client.gridfs.GridFSBucket;
 import com.xichuan.files.resource.FileResource;
 import com.xichuan.files.service.UploaderService;
 import com.xichuan.api.files.FileUploaderControllerApi;
@@ -8,6 +9,7 @@ import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.extend.AliImageReviewUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,9 @@ public class FileUploaderController implements FileUploaderControllerApi {
     @Autowired
     private AliImageReviewUtils aliImageReviewUtils;
 
-
+    @Autowired
+    private GridFSBucket gridFSBucket;
+    
     @Override
     public GraceJSONResult uploadFace(String userId,
                                       MultipartFile file) throws Exception {
@@ -87,10 +91,6 @@ public class FileUploaderController implements FileUploaderControllerApi {
         return GraceJSONResult.ok(finalPath);
     }
 
-    @Override
-    public GraceJSONResult uploadToGridFS(NewAdminBO newAdminBO) throws Exception {
-        return null;
-    }
 
 
     public static final String FAILED_IMAGE_URL = "https://imooc-news.oss-cn-shanghai.aliyuncs.com/image/faild.jpeg";
@@ -119,6 +119,27 @@ public class FileUploaderController implements FileUploaderControllerApi {
 
 
 
+    @Override
+    public GraceJSONResult uploadToGridFS(NewAdminBO newAdminBO)
+            throws Exception {
+
+        // 获得图片的base64字符串
+        String file64 = newAdminBO.getImg64();
+
+        // 将base64字符串转换为byte数组
+        byte[] bytes = new BASE64Decoder().decodeBuffer(file64.trim());
+
+        // 转换为输入流
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+
+        // 上传到gridfs中
+        ObjectId fileId = gridFSBucket.uploadFromStream(newAdminBO.getUsername() + ".png", inputStream);
+
+        // 获得文件在gridfs中的主键id
+        String fileIdStr = fileId.toString();
+
+        return GraceJSONResult.ok(fileIdStr);
+    }
 
 
 }

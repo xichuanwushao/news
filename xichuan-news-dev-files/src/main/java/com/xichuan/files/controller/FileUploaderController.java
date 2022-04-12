@@ -1,12 +1,17 @@
 package com.xichuan.files.controller;
 
 import com.mongodb.client.gridfs.GridFSBucket;
+import com.mongodb.client.gridfs.GridFSFindIterable;
+import com.mongodb.client.gridfs.model.GridFSFile;
+import com.mongodb.client.model.Filters;
 import com.xichuan.files.resource.FileResource;
 import com.xichuan.files.service.UploaderService;
 import com.xichuan.api.files.FileUploaderControllerApi;
 import com.xichuan.model.pojo.bo.NewAdminBO;
+import com.xichuan.vommon.exception.GraceException;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
+import com.xichuan.vommon.util.FileUtils;
 import com.xichuan.vommon.util.extend.AliImageReviewUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
@@ -23,8 +28,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class FileUploaderController implements FileUploaderControllerApi {
@@ -140,6 +143,54 @@ public class FileUploaderController implements FileUploaderControllerApi {
 
         return GraceJSONResult.ok(fileIdStr);
     }
+
+    @Override
+    public void readInGridFS(String faceId,
+                             HttpServletRequest request,
+                             HttpServletResponse response) throws Exception {
+
+        // 0. 判断参数
+        if (StringUtils.isBlank(faceId) || faceId.equalsIgnoreCase("null")) {
+            GraceException.display(ResponseStatusEnum.FILE_NOT_EXIST_ERROR);
+        }
+
+        // 1. 从gridfs中读取
+        File adminFace = readGridFSByFaceId(faceId);
+
+        // 2. 把人脸图片输出到浏览器
+        FileUtils.downloadFileByStream(response, adminFace);
+    }
+
+    private File readGridFSByFaceId(String faceId) throws Exception {
+
+        GridFSFindIterable gridFSFiles
+                = gridFSBucket.find(Filters.eq("_id", new ObjectId(faceId)));
+
+        GridFSFile gridFS = gridFSFiles.first();
+
+        if (gridFS == null) {
+            GraceException.display(ResponseStatusEnum.FILE_NOT_EXIST_ERROR);
+        }
+
+        String fileName = gridFS.getFilename();
+        System.out.println(fileName);
+
+        // 获取文件流，保存文件到本地或者服务器的临时目录
+        File fileTemp = new File("/workspace/temp_face");
+        if (!fileTemp.exists()) {
+            fileTemp.mkdirs();
+        }
+
+        File myFile = new File("/workspace/temp_face/" + fileName);
+
+        // 创建文件输出流
+        OutputStream os = new FileOutputStream(myFile);
+        // 下载到服务器或者本地
+        gridFSBucket.downloadToStream(new ObjectId(faceId), os);
+
+        return myFile;
+    }
+
 
 
 }

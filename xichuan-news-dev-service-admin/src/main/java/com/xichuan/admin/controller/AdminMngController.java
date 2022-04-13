@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RestController;
@@ -165,6 +166,36 @@ public class AdminMngController extends BaseController implements AdminMngContro
         deleteCookie(request, response, "atoken");
         deleteCookie(request, response, "aid");
         deleteCookie(request, response, "aname");
+
+        return GraceJSONResult.ok();
+    }
+
+    @Override
+    public GraceJSONResult adminFaceLogin(AdminLoginBO adminLoginBO, HttpServletRequest request, HttpServletResponse response) {
+        // 0. 判断用户名和人脸信息不能为空
+        if (StringUtils.isBlank(adminLoginBO.getUsername())) {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.ADMIN_USERNAME_NULL_ERROR);
+        }
+        String tempFace64 = adminLoginBO.getImg64();
+        if (StringUtils.isBlank(tempFace64)) {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.ADMIN_FACE_NULL_ERROR);
+        }
+
+        // 1. 从数据库中查询出faceId
+        AdminUser admin = adminUserService.queryAdminByUsername(adminLoginBO.getUsername());
+        String adminFaceId = admin.getFaceId();
+
+        if (StringUtils.isBlank(adminFaceId)) {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.ADMIN_FACE_LOGIN_ERROR);
+        }
+
+        // 2. 请求文件服务，获得人脸数据的base64数据
+
+
+
+        // 3. 调用阿里ai进行人脸对比识别，判断可信度，从而实现人脸登录
+
+
 
         return GraceJSONResult.ok();
     }

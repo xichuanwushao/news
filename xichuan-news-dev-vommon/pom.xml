@@ -128,7 +128,11 @@
         <artifactId>fastjson</artifactId>
         <version>1.2.51</version>
     </dependency>
-
+    <!--服务调用-->
+    <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+    </dependency>
 </dependencies>
 
 </project>

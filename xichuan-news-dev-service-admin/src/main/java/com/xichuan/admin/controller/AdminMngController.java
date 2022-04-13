@@ -6,9 +6,11 @@ import com.xichuan.api.controller.admin.AdminMngControllerApi;
 import com.xichuan.model.pojo.AdminUser;
 import com.xichuan.model.pojo.bo.AdminLoginBO;
 import com.xichuan.model.pojo.bo.NewAdminBO;
+import com.xichuan.vommon.enums.FaceVerifyType;
 import com.xichuan.vommon.exception.GraceException;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
+import com.xichuan.vommon.util.FaceVerifyUtils;
 import com.xichuan.vommon.util.PagedGridResult;
 import com.xichuan.vommon.util.RedisOperator;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +47,10 @@ public class AdminMngController extends BaseController implements AdminMngContro
 
     @Autowired
     private RestTemplate restTemplate;
+
+
+    @Autowired
+    private FaceVerifyUtils faceVerifyUtils;
 
     @Override
     public GraceJSONResult adminLogin( AdminLoginBO adminLoginBO,
@@ -196,7 +202,7 @@ public class AdminMngController extends BaseController implements AdminMngContro
 
         // 2. 请求文件服务，获得人脸数据的base64数据
         String fileServerUrlExecute
-                = "http://files.imoocnews.com:8004/fs/readFace64InGridFS?faceId=" + adminFaceId;
+                = "http://127.0.0.1:8004/fs/readFace64InGridFS?faceId=" + adminFaceId;
         ResponseEntity<GraceJSONResult> responseEntity
                 = restTemplate.getForEntity(fileServerUrlExecute, GraceJSONResult.class);
         GraceJSONResult bodyResult = responseEntity.getBody();
@@ -204,8 +210,14 @@ public class AdminMngController extends BaseController implements AdminMngContro
 
 
         // 3. 调用阿里ai进行人脸对比识别，判断可信度，从而实现人脸登录
+        boolean result = faceVerifyUtils.faceVerify(FaceVerifyType.BASE64.type,
+                tempFace64,
+                base64DB,
+                60);
 
-
+        if (!result) {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.ADMIN_FACE_LOGIN_ERROR);
+        }
 
         return GraceJSONResult.ok();
     }

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +41,10 @@ public class AdminMngController extends BaseController implements AdminMngContro
 
     @Autowired
     private IAdminUserService adminUserService;
+
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public GraceJSONResult adminLogin( AdminLoginBO adminLoginBO,
@@ -190,7 +195,12 @@ public class AdminMngController extends BaseController implements AdminMngContro
         }
 
         // 2. 请求文件服务，获得人脸数据的base64数据
-
+        String fileServerUrlExecute
+                = "http://files.imoocnews.com:8004/fs/readFace64InGridFS?faceId=" + adminFaceId;
+        ResponseEntity<GraceJSONResult> responseEntity
+                = restTemplate.getForEntity(fileServerUrlExecute, GraceJSONResult.class);
+        GraceJSONResult bodyResult = responseEntity.getBody();
+        String base64DB = (String)bodyResult.getData();
 
 
         // 3. 调用阿里ai进行人脸对比识别，判断可信度，从而实现人脸登录

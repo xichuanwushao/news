@@ -35,7 +35,8 @@ public class EntityGenerator {
 
     static{
         tableNames = new String[]{
-                "admin_user"
+                "category"
+//                "admin_user"
 //                 "mooc_backend_user_t"
 //                 "app_user"
 //                 "fans"

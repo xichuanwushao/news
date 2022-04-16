@@ -28,6 +28,9 @@ public class BaseController {
     public static final String REDIS_USER_TOKEN = "redis_user_token";
     public static final String REDIS_USER_INFO = "redis_user_info";
     public static final String REDIS_ADMIN_TOKEN = "redis_admin_token";
+
+    public static final String REDIS_ALL_CATEGORY = "redis_all_category";
+
     @Value("${website.domain-name}")
     public String DOMAIN_NAME;
     public static final Integer COOKIE_MONTH = 30 * 24 * 60 * 60;

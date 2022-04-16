@@ -6,6 +6,8 @@ import com.xichuan.model.pojo.mo.FriendLinkMO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author : wuxiao
  * @date : 13:55 2022/4/16
@@ -21,4 +23,16 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     public void saveOrUpdateFriendLink(FriendLinkMO friendLinkMO) {
         friendLinkRepository.save(friendLinkMO);
     }
+
+
+    @Override
+    public List<FriendLinkMO> queryAllFriendLinkList() {
+        return friendLinkRepository.findAll();
+    }
+
+    @Override
+    public void delete(String linkId) {
+        friendLinkRepository.deleteById(linkId);
+    }
+
 }

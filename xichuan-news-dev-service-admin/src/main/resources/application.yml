@@ -30,6 +30,10 @@ spring:
     username: root
     password: qweqwe
     filters: log4j,wall,mergeStat
+  data:
+    mongodb:
+      uri: mongodb://admin:abc123456@127.0.0.1:27017
+      database: xichuan-news
 mybatis-plus:
   mapper-locations:  classpath*:mapper/**/*Mapper.xml
   configuration:

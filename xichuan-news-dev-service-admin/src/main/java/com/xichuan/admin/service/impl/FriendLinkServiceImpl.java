@@ -1,0 +1,24 @@
+package com.xichuan.admin.service.impl;
+
+import com.xichuan.admin.repository.FriendLinkRepository;
+import com.xichuan.admin.service.FriendLinkService;
+import com.xichuan.model.pojo.mo.FriendLinkMO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * @author : wuxiao
+ * @date : 13:55 2022/4/16
+ */
+@Service
+public class FriendLinkServiceImpl implements FriendLinkService {
+
+
+    @Autowired
+    private FriendLinkRepository friendLinkRepository;
+
+    @Override
+    public void saveOrUpdateFriendLink(FriendLinkMO friendLinkMO) {
+        friendLinkRepository.save(friendLinkMO);
+    }
+}

@@ -2,8 +2,10 @@ package com.xichuan.user.controller;
 
 import com.xichuan.api.BaseController;
 import com.xichuan.api.controller.user.AppUserMngControllerApi;
+import com.xichuan.user.service.AppUserMngService;
 import com.xichuan.user.service.UserService;
 import com.xichuan.vommon.result.GraceJSONResult;
+import com.xichuan.vommon.util.PagedGridResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import java.util.Date;
 public class AppUserMngController extends BaseController implements AppUserMngControllerApi {
     final static Logger logger = LoggerFactory.getLogger(AppUserMngController.class);
 
+    @Autowired
+    private AppUserMngService appUserMngService;
 
     @Autowired
     private UserService userService;
@@ -43,7 +47,15 @@ public class AppUserMngController extends BaseController implements AppUserMngCo
         }
 
 
-        return GraceJSONResult.ok();
+
+        PagedGridResult result = appUserMngService.queryAllUserList(nickname,
+                status,
+                startDate,
+                endDate,
+                page,
+                pageSize);
+
+        return GraceJSONResult.ok(result);
     }
 
 }

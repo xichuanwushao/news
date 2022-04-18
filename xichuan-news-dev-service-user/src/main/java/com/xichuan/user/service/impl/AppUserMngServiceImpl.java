@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.xichuan.api.service.BaseService;
 import com.xichuan.model.pojo.AppUser;
-import com.xichuan.model.pojo.Category;
 import com.xichuan.user.mapper.AppUserMapper;
 import com.xichuan.user.service.AppUserMngService;
 import com.xichuan.vommon.enums.UserStatus;
@@ -12,7 +11,7 @@ import com.xichuan.vommon.util.PagedGridResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -54,4 +53,12 @@ public class AppUserMngServiceImpl extends BaseService implements AppUserMngServ
         return setterPagedGrid(list, page);
     }
 
+    @Transactional
+    @Override
+    public void freezeUserOrNot(String userId, Integer doStatus) {
+        AppUser user = new AppUser();
+        user.setId(userId);
+        user.setActiveStatus(doStatus);
+        appUserMapper.updateById(user);
+    }
 }

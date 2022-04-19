@@ -71,6 +71,10 @@ public class CategoryMngController extends BaseController implements CategoryMng
         return GraceJSONResult.ok(categoryList);
     }
 
+    /***
+     * 使用redis对文章分类数据进行缓存
+     * @return
+     */
     @Override
     public GraceJSONResult getCats() {
         // 先从redis中查询，如果有，则返回，如果没有，则查询数据库库后先放缓存，放返回

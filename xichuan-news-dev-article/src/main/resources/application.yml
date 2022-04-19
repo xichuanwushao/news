@@ -1,0 +1,58 @@
+############################################################
+#
+# 用户微服务
+# web访问端口号  约定：8005
+#
+############################################################
+server:
+  port: 8006
+  tomcat:
+    uri-encoding: UTF-8
+    max-swallow-size: -1  # tomcat默认大小2M，超过2M的文件不会被捕获，需要调整此处大小为100MB或者-1即可
+  # 云存储配置
+  servlet:
+    context-path: /
+############################################################
+#
+# 配置项目信息
+#
+############################################################
+spring:
+  profiles:
+    active: dev     # yml中配置文件的环境配置，dev：开发环境，test：测试环境，prod：生产环境
+  application:
+    name: service-article
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/news-dev?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: qweqwe
+    filters: log4j,wall,mergeStat
+  data:
+    mongodb:
+      uri: mongodb://admin:abc123456@127.0.0.1:27017
+      database: xichuan-news
+mybatis-plus:
+  mapper-locations:  classpath*:mapper/**/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    id-type: 0  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
+    db-column-underline: false
+    refresh-mapper: true
+logging:
+  config: classpath:logback.xml
+swagger:
+  # 是否开启swagger
+  enabled: true
+  # 请求前缀
+  pathMapping: /
+# PageHelper分页插件
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
+  params: count=countSql
+
+

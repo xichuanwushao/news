@@ -2,6 +2,8 @@ package com.xichuan.api.service;
 
 import com.github.pagehelper.PageInfo;
 import com.xichuan.vommon.util.PagedGridResult;
+import com.xichuan.vommon.util.RedisOperator;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -10,6 +12,8 @@ import java.util.List;
  * @date : 16:58 2022/4/10
  */
 public class BaseService {
+
+    public static final String REDIS_ALL_CATEGORY = "redis_all_category";
 
     public PagedGridResult setterPagedGrid(List<?> list,
                                            Integer page) {
@@ -21,4 +25,8 @@ public class BaseService {
         gridResult.setTotal(pageList.getPages());
         return gridResult;
     }
+
+
+    @Autowired
+    public RedisOperator redis;
 }

@@ -32,7 +32,16 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
             GraceException.display(ResponseStatusEnum.SYSTEM_OPERATION_ERROR);
         }
 
+        /**
+         * 不建议如下做法：
+         * 1. 查询redis中的categoryList
+         * 2. 转化categoryList为list类型
+         * 3. 在categoryList中add一个当前的category
+         * 4. 再次转换categoryList为json，并存入redis中
+         */
 
+        // 直接使用redis删除缓存即可，用户端在查询的时候会直接查库，再把最新的数据放入到缓存中
+        redis.del(REDIS_ALL_CATEGORY);
 
     }
 
@@ -43,6 +52,17 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
         if (result != 1) {
             GraceException.display(ResponseStatusEnum.SYSTEM_OPERATION_ERROR);
         }
+
+        /**
+         * 不建议如下做法：
+         * 1. 查询redis中的categoryList
+         * 2. 循环categoryList中拿到原来的老的数据
+         * 3. 替换老的category为新的
+         * 4. 再次转换categoryList为json，并存入redis中
+         */
+
+        // 直接使用redis删除缓存即可，用户端在查询的时候会直接查库，再把最新的数据放入到缓存中
+        redis.del(REDIS_ALL_CATEGORY);
     }
 
     @Override

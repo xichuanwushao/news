@@ -51,8 +51,8 @@ fs:
   files-server:
     type: minio
     minio:
-      accessKey: admin
-      secretKey: 12345678
-      consoleUrl: http://192.168.1.122:9000
-      apiPort: 9000
+      accessKey: administrator
+      secretKey: administrator
+      consoleUrl: http://192.168.43.155:65535
+      apiPort: 65535
       defaultBucket: huoyan

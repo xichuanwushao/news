@@ -2,6 +2,7 @@ package com.xichuan.article.controller;
 
 import com.xichuan.api.BaseController;
 import com.xichuan.api.article.ArticleControllerApi;
+import com.xichuan.article.service.ArticleService;
 import com.xichuan.model.pojo.Category;
 import com.xichuan.model.pojo.bo.NewArticleBO;
 import com.xichuan.vommon.enums.ArticleCoverType;
@@ -9,6 +10,7 @@ import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +24,10 @@ import java.util.Map;
  */
 @RestController
 public class ArticleController extends BaseController implements ArticleControllerApi {
+
+    @Autowired
+    private ArticleService articleService;
+
 
     @Override
     public GraceJSONResult createArticle(@Valid NewArticleBO newArticleBO, BindingResult result) {
@@ -59,8 +65,9 @@ public class ArticleController extends BaseController implements ArticleControll
             }
         }
 
-        System.out.println(newArticleBO.toString());
+//        System.out.println(newArticleBO.toString());
 
+        articleService.createArticle(newArticleBO, temp);
 
         return GraceJSONResult.ok();
     }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xichuan.database.mapper.ArticleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xichuan.database.entity.Article">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="category_id" property="categoryId" />
+        <result column="article_type" property="articleType" />
+        <result column="article_cover" property="articleCover" />
+        <result column="is_appoint" property="isAppoint" />
+        <result column="article_status" property="articleStatus" />
+        <result column="publish_user_id" property="publishUserId" />
+        <result column="publish_time" property="publishTime" />
+        <result column="read_counts" property="readCounts" />
+        <result column="comment_counts" property="commentCounts" />
+        <result column="mongo_file_id" property="mongoFileId" />
+        <result column="is_delete" property="isDelete" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+</mapper>

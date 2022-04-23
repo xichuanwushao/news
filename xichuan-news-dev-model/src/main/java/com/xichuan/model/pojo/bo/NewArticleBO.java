@@ -19,7 +19,7 @@ public class NewArticleBO {
     private String title;
 
     @NotBlank(message = "文章内容不能为空")
-    @Length(max = 9999, message = "文章内容长度不能超过10000")
+    @Length(max = 10000000, message = "文章内容长度不能超过10000000")
     private String content;
 
     @NotNull(message = "请选择文章领域")

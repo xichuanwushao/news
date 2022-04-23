@@ -45,4 +45,9 @@ public interface ArticleControllerApi {
                                         @RequestParam Integer page,
                                         @ApiParam(name = "pageSize", value = "分页的每一页显示的条数", required = false)
                                         @RequestParam Integer pageSize);
+
+    @PostMapping("doReview")
+    @ApiOperation(value = "管理员对文章进行审核通过或者失败", notes = "管理员对文章进行审核通过或者失败", httpMethod = "POST")
+    public GraceJSONResult doReview(@RequestParam String articleId,
+                                    @RequestParam Integer passOrNot);
 }

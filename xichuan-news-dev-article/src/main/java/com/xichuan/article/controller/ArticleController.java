@@ -6,6 +6,8 @@ import com.xichuan.article.service.ArticleService;
 import com.xichuan.model.pojo.Category;
 import com.xichuan.model.pojo.bo.NewArticleBO;
 import com.xichuan.vommon.enums.ArticleCoverType;
+import com.xichuan.vommon.enums.ArticleReviewStatus;
+import com.xichuan.vommon.enums.YesOrNo;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.JsonUtils;
@@ -123,4 +125,23 @@ public class ArticleController extends BaseController implements ArticleControll
         return GraceJSONResult.ok(gridResult);
     }
 
+    @Override
+    public GraceJSONResult doReview(String articleId, Integer passOrNot) {
+
+        Integer pendingStatus;
+        if (passOrNot == YesOrNo.YES.type) {
+            // 审核成功
+            pendingStatus = ArticleReviewStatus.SUCCESS.type;
+        } else if (passOrNot == YesOrNo.NO.type) {
+            // 审核失败
+            pendingStatus = ArticleReviewStatus.FAILED.type;
+        } else {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.ARTICLE_REVIEW_ERROR);
+        }
+
+        // 保存到数据库，更改文章的状态为审核成功或者失败
+        articleService.updateArticleStatus(articleId, pendingStatus);
+
+        return GraceJSONResult.ok();
+    }
 }

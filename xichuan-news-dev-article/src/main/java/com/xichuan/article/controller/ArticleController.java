@@ -9,12 +9,14 @@ import com.xichuan.vommon.enums.ArticleCoverType;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.JsonUtils;
+import com.xichuan.vommon.util.PagedGridResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,4 +73,37 @@ public class ArticleController extends BaseController implements ArticleControll
 
         return GraceJSONResult.ok();
     }
+
+    @Override
+    public GraceJSONResult queryMyList(String userId,
+                                       String keyword,
+                                       Integer status,
+                                       Date startDate,
+                                       Date endDate,
+                                       Integer page,
+                                       Integer pageSize) {
+
+        if (StringUtils.isBlank(userId)) {
+            return GraceJSONResult.errorCustom(ResponseStatusEnum.ARTICLE_QUERY_PARAMS_ERROR);
+        }
+
+        if (page == null) {
+            page = COMMON_START_PAGE;
+        }
+        if (pageSize == null) {
+            pageSize = COMMON_PAGE_SIZE;
+        }
+
+        // 查询我的列表，调用service
+        PagedGridResult grid = articleService.queryMyArticleList(userId,
+                keyword,
+                status,
+                startDate,
+                endDate,
+                page,
+                pageSize);
+
+        return GraceJSONResult.ok(grid);
+    }
+
 }

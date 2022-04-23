@@ -112,6 +112,30 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
             GraceException.display(ResponseStatusEnum.ARTICLE_REVIEW_ERROR);
         }
     }
+
+    @Override
+    public PagedGridResult queryAllArticleListAdmin(Integer status, Integer page, Integer pageSize) {
+        LambdaQueryWrapper<Article> queryWrapper = new QueryWrapper<Article>().lambda();
+        queryWrapper.orderByDesc(Article::getCreateTime);
+        if (ArticleReviewStatus.isArticleStatusValid(status)) {
+            queryWrapper.eq(Article::getArticleStatus, status);
+        }
+
+        if (status != null && status == 12) {
+            queryWrapper
+                    .eq(Article::getArticleStatus,  ArticleReviewStatus.REVIEWING.type)
+                    .or()
+                    .eq(Article::getArticleStatus, ArticleReviewStatus.WAITING_MANUAL.type);
+        }
+
+        //isDelete 必须是0
+        queryWrapper.eq(Article::getIsDelete, YesOrNo.NO.type);
+
+        PageHelper.startPage(page, pageSize);
+        List<Article> list = articleMapper.selectList(queryWrapper);
+        return setterPagedGrid(list, page);
+    }
+
     @Transactional
     @Override
     public void updateAppointToPublish() {

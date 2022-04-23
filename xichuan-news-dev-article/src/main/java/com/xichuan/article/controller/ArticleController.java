@@ -106,4 +106,21 @@ public class ArticleController extends BaseController implements ArticleControll
         return GraceJSONResult.ok(grid);
     }
 
+
+    @Override
+    public GraceJSONResult queryAllList(Integer status, Integer page, Integer pageSize) {
+
+        if (page == null) {
+            page = COMMON_START_PAGE;
+        }
+
+        if (pageSize == null) {
+            pageSize = COMMON_PAGE_SIZE;
+        }
+
+        PagedGridResult gridResult = articleService.queryAllArticleListAdmin(status, page, pageSize);
+
+        return GraceJSONResult.ok(gridResult);
+    }
+
 }

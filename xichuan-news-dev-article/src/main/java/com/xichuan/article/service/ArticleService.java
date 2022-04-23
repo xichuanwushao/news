@@ -35,4 +35,11 @@ public interface ArticleService {
      * 更改文章的状态
      */
     public void updateArticleStatus(String articleId, Integer pendingStatus);
+
+
+    /**
+     * 管理员查询文章列表
+     */
+    public PagedGridResult queryAllArticleListAdmin(Integer status, Integer page, Integer pageSize);
+
 }

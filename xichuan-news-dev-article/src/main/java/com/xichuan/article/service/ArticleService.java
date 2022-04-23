@@ -31,4 +31,8 @@ public interface ArticleService {
                                               Date endDate,
                                               Integer page,
                                               Integer pageSize);
+    /**
+     * 更改文章的状态
+     */
+    public void updateArticleStatus(String articleId, Integer pendingStatus);
 }

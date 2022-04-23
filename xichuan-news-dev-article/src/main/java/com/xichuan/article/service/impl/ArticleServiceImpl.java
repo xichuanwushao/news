@@ -12,11 +12,13 @@ import com.xichuan.model.pojo.Article;
 import com.xichuan.model.pojo.Category;
 import com.xichuan.model.pojo.bo.NewArticleBO;
 import com.xichuan.vommon.enums.ArticleAppointType;
+import com.xichuan.vommon.enums.ArticleReviewLevel;
 import com.xichuan.vommon.enums.ArticleReviewStatus;
 import com.xichuan.vommon.enums.YesOrNo;
 import com.xichuan.vommon.exception.GraceException;
 import com.xichuan.vommon.result.ResponseStatusEnum;
 import com.xichuan.vommon.util.PagedGridResult;
+import com.xichuan.vommon.util.extend.AliTextReviewUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.BeanUtils;
@@ -41,6 +43,8 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
     @Autowired
     private ArticleMapperCust articleMapperCust;
 
+    @Autowired
+    private AliTextReviewUtils aliTextReviewUtils;
     @Autowired
     private Sid sid;
     @Transactional
@@ -72,8 +76,42 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         if (res != 1) {
             GraceException.display(ResponseStatusEnum.ARTICLE_CREATE_ERROR);
         }
-    }
+        /**
+         * FIXME: 我们只检测正常的词汇，非正常词汇大家课后去检测
+         */
+        // 通过阿里智能AI实现对文章文本的自动检测（自动审核）
+//        String reviewTextResult = aliTextReviewUtils.reviewTextContent(newArticleBO.getContent());
+        String reviewTextResult = ArticleReviewLevel.REVIEW.type;
 
+        if (reviewTextResult
+                .equalsIgnoreCase(ArticleReviewLevel.PASS.type)) {
+            // 修改当前的文章，状态标记为审核通过
+            this.updateArticleStatus(articleId, ArticleReviewStatus.SUCCESS.type);
+        } else if (reviewTextResult
+                .equalsIgnoreCase(ArticleReviewLevel.REVIEW.type)) {
+            // 修改当前的文章，状态标记为需要人工审核
+            this.updateArticleStatus(articleId, ArticleReviewStatus.WAITING_MANUAL.type);
+        } else if (reviewTextResult
+                .equalsIgnoreCase(ArticleReviewLevel.BLOCK.type)) {
+            // 修改当前的文章，状态标记为审核未通过
+            this.updateArticleStatus(articleId, ArticleReviewStatus.FAILED.type);
+        }
+    }
+    @Transactional
+    @Override
+    public void updateArticleStatus(String articleId, Integer pendingStatus) {
+
+        LambdaQueryWrapper<Article> queryWrapper = new QueryWrapper<Article>().lambda();
+        queryWrapper.orderByDesc(Article::getCreateTime);
+        queryWrapper.eq(Article::getId, articleId);
+
+        Article pendingArticle = new Article();
+        pendingArticle.setArticleStatus(pendingStatus);
+        int res = articleMapper.update(pendingArticle,queryWrapper);
+        if (res != 1) {
+            GraceException.display(ResponseStatusEnum.ARTICLE_REVIEW_ERROR);
+        }
+    }
     @Transactional
     @Override
     public void updateAppointToPublish() {

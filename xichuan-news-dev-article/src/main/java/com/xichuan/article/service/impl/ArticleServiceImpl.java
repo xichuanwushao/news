@@ -183,4 +183,45 @@ public class ArticleServiceImpl extends BaseService implements ArticleService {
         List<Article> list = articleMapper.selectList(queryWrapper);
         return setterPagedGrid(list, page);
     }
+
+
+    @Transactional
+    @Override
+    public void deleteArticle(String userId, String articleId) {
+        LambdaQueryWrapper<Article> articleExample = makeExampleCriteria(userId, articleId);
+
+        Article pending = new Article();
+        pending.setIsDelete(YesOrNo.YES.type);
+
+        int result = articleMapper.update(pending, articleExample);
+        if (result != 1) {
+            GraceException.display(ResponseStatusEnum.ARTICLE_DELETE_ERROR);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void withdrawArticle(String userId, String articleId) {
+        LambdaQueryWrapper<Article> articleExample = makeExampleCriteria(userId, articleId);
+
+        Article pending = new Article();
+        pending.setArticleStatus(ArticleReviewStatus.WITHDRAW.type);
+
+        int result = articleMapper.update(pending, articleExample);
+        if (result != 1) {
+            GraceException.display(ResponseStatusEnum.ARTICLE_WITHDRAW_ERROR);
+        }
+    }
+    private LambdaQueryWrapper<Article> makeExampleCriteria(String userId, String articleId) {
+        LambdaQueryWrapper<Article> queryWrapper = new QueryWrapper<Article>().lambda();
+//        queryWrapper
+//                .eq(Article::getArticleCover, "")
+//                .or()
+//                .eq(Article::getIsAppoint, "");
+//        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq(Article::getPublishUserId, userId);
+        queryWrapper.eq(Article::getId, articleId);
+
+        return queryWrapper;
+    }
 }

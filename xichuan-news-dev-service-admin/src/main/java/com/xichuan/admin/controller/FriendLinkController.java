@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,5 +59,9 @@ public class FriendLinkController extends BaseController implements FriendLinkCo
         friendLinkService.delete(linkId);
         return GraceJSONResult.ok();
     }
-
+    @Override
+    public GraceJSONResult queryPortalAllFriendLinkList() {
+        List<FriendLinkMO> list = friendLinkService.queryPortalAllFriendLinkList();
+        return GraceJSONResult.ok(list);
+    }
 }

@@ -3,6 +3,7 @@ package com.xichuan.admin.service.impl;
 import com.xichuan.admin.repository.FriendLinkRepository;
 import com.xichuan.admin.service.FriendLinkService;
 import com.xichuan.model.pojo.mo.FriendLinkMO;
+import com.xichuan.vommon.enums.YesOrNo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +35,8 @@ public class FriendLinkServiceImpl implements FriendLinkService {
     public void delete(String linkId) {
         friendLinkRepository.deleteById(linkId);
     }
-
+    @Override
+    public List<FriendLinkMO> queryPortalAllFriendLinkList() {
+        return friendLinkRepository.getAllByIsDelete(YesOrNo.NO.type);
+    }
 }

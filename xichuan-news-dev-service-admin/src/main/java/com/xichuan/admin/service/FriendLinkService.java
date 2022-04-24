@@ -25,4 +25,8 @@ public interface FriendLinkService {
      */
     public void delete(String linkId);
 
+    /**
+     * 首页查询友情链接
+     */
+    public List<FriendLinkMO> queryPortalAllFriendLinkList();
 }

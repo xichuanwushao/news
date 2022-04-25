@@ -5,16 +5,19 @@ import com.xichuan.api.article.ArticlePortalControllerApi;
 import com.xichuan.article.service.ArticlePortalService;
 import com.xichuan.model.pojo.Article;
 import com.xichuan.model.pojo.vo.AppUserVO;
+import com.xichuan.model.pojo.vo.IndexArticleVO;
 import com.xichuan.vommon.result.GraceJSONResult;
 import com.xichuan.vommon.util.JsonUtils;
 import com.xichuan.vommon.util.PagedGridResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -85,9 +88,30 @@ public class ArticlePortalController extends BaseController implements ArticlePo
         }
 
 
+        // 3. 拼接两个list，重组文章列表
+        List<IndexArticleVO> indexArticleList = new ArrayList<>();
+        for (Article a : list) {
+            IndexArticleVO indexArticleVO = new IndexArticleVO();
+            BeanUtils.copyProperties(a, indexArticleVO);
+
+            // 3.1 从publisherList中获得发布者的基本信息
+            AppUserVO publisher  = getUserIfPublisher(a.getPublishUserId(), publisherList);
+            indexArticleVO.setPublisherVO(publisher);
+            indexArticleList.add(indexArticleVO);
+        }
+        gridResult.setRows(indexArticleList);
 // END
 
 
         return GraceJSONResult.ok(gridResult);
+    }
+    private AppUserVO getUserIfPublisher(String publisherId,
+                                         List<AppUserVO> publisherList) {
+        for (AppUserVO user : publisherList) {
+            if (user.getId().equalsIgnoreCase(publisherId)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

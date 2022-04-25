@@ -4,11 +4,14 @@ import com.xichuan.api.BaseController;
 import com.xichuan.api.article.ArticlePortalControllerApi;
 import com.xichuan.article.service.ArticlePortalService;
 import com.xichuan.model.pojo.Article;
+import com.xichuan.model.pojo.vo.AppUserVO;
 import com.xichuan.vommon.result.GraceJSONResult;
+import com.xichuan.vommon.util.JsonUtils;
 import com.xichuan.vommon.util.PagedGridResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,6 +31,9 @@ public class ArticlePortalController extends BaseController implements ArticlePo
 
     @Autowired
     private ArticlePortalService articlePortalService;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public GraceJSONResult list(String keyword, Integer category, Integer page, Integer pageSize) {
@@ -63,6 +69,20 @@ public class ArticlePortalController extends BaseController implements ArticlePo
         }
         System.out.println(idSet.toString());
 
+        // 2. 发起远程调用（restTemplate），请求用户服务获得用户（idSet 发布者）的列表
+        String userServerUrlExecute
+                = "http://127.0.0.1:8003/user/queryByIds?userIds=" + JsonUtils.objectToJson(idSet);
+        ResponseEntity<GraceJSONResult> responseEntity
+                = restTemplate.getForEntity(userServerUrlExecute, GraceJSONResult.class);
+        GraceJSONResult bodyResult = responseEntity.getBody();
+        List<AppUserVO> publisherList = null;
+        if (bodyResult.getStatus() == 200) {
+            String userJson = JsonUtils.objectToJson(bodyResult.getData());
+            publisherList = JsonUtils.jsonToList(userJson, AppUserVO.class);
+        }
+        for (AppUserVO u : publisherList) {
+            System.out.println(u.toString());
+        }
 
 
 // END
